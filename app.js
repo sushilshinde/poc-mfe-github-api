@@ -36,17 +36,21 @@ app.get("/repositories/:userHandle", async (req, res) => {
 
 // http://localhost:3001/events/sushilshinde
 app.get("/events/:userHandle", async (req, res) => {
-    const userHandle = req.params.userHandle;
-    const response = await axios.get(
-        `https://api.github.com/users/${userHandle}/events?per_page=${pageSize}`,
-        {
-            headers: {
-                Authorization: token,
-                "Accept-Encoding": "application/json",
-            },
-        }
-    );
-    res.status(200).json({ data: response.data });
+    try {
+        const userHandle = req.params.userHandle;
+        const response = await axios.get(
+            `https://api.github.com/users/${userHandle}/events?per_page=${pageSize}`,
+            {
+                headers: {
+                    Authorization: token,
+                    "Accept-Encoding": "application/json",
+                },
+            }
+        );
+        return res.status(200).json({ data: response.data });
+    } catch (error) {
+        return res.status(400).json({ data: error });
+    }
 });
 
 // http://localhost:3001/events/sushilshinde
